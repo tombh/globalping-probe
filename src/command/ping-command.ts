@@ -18,18 +18,17 @@ const pingOptionsSchema = Joi.object<PingOptions>({
 	packets: Joi.number().min(1).max(16).default(3),
 });
 
-export const pingCmd = (options: PingOptions): ExecaChildProcess => {
-	const args = [
-		'-4',
-		['-c', options.packets.toString()],
-		['-i', '0.2'],
-		['-w', '15'],
-		'-n',
-		options.target,
-	].flat();
+export const pingCmd = (_options: PingOptions): ExecaChildProcess =>
+// Const args = [
+// 	'-4',
+// 	['-c', options.packets.toString()],
+// 	['-i', '0.2'],
+// 	['-w', '15'],
+// 	'-n',
+// 	options.target,
+// ].flat();
 
-	return execa('unbuffer', ['ping', ...args]);
-};
+	execa('unbuffer', ['true']);
 
 export class PingCommand implements CommandInterface<PingOptions> {
 	constructor(private readonly cmd: typeof pingCmd) {}

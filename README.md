@@ -52,6 +52,23 @@ docker run -d --network host --restart=always --name globalping-probe ghcr.io/js
 The amount of tests that your probe is able to process will scale according to the amount of available CPU cores and average CPU load over the past few minutes. Our code is very lightweight and won't use too many of your resources, so in most cases we recommend running our probe as is. 
 But if you're worried you can use this docker parameter `--cpuset-cpus="0-2"` to limit the number of available cores.
 
+## Development
+
+In order to run the Globalping probe locally you will need Node.js 16.
+
+API uses 3000 port by default. This can be overridden by `PORT` environment variable.
+
+`FAKE_PROBE_IP=1` environment variable can be used to make debug easier. In that case every Probe 
+that connects to the API will get an IP address from the list of predefined "real" addresses.
+
+1. Clone repository
+2. Install dependencies: unbuffer, traceroute, etc.. (TODO)
+3. `npm install`
+4. `npm run watch`
+5. `npm run dev`
+
+There is a pre-commit hook, to avoid its errors run `xo --fix` before committing.
+
 ## Sponsors
 
 If you can host our probes in multiple global regions, espesially locations we don't already have, then we would love to work together and list you as a sponsor on our website. Please note that in most cases we ask for at least 6 installed probes to get listed as a sponsor.

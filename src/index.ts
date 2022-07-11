@@ -1,5 +1,6 @@
 import process from 'node:process';
 import throng from 'throng';
+import _ from 'lodash';
 import {io} from 'socket.io-client';
 import cryptoRandomString from 'crypto-random-string';
 import physicalCpuCount from 'physical-cpu-count';
@@ -105,6 +106,7 @@ function connect() {
 			socket.emit('probe:measurement:ack', {id: testId, measurementId}, async () => {
 				const handler = handlersMap.get(measurement.type);
 				if (!handler) {
+					logger.debug(`No handler found for ${measurement.type} request ${data.id}`, data);
 					return;
 				}
 
@@ -150,8 +152,11 @@ function connect() {
 }
 
 if (process.env['NODE_ENV'] === 'development') {
-	// Run multiple clients in dev mode for easier debugging
-	throng({worker: connect, count: physicalCpuCount})
+	const base = 10;
+	const userSpecifiedProbeCount = Number.parseInt(process.env['PROBE_COUNT'] ?? '', base);
+	const count = userSpecifiedProbeCount ?? physicalCpuCount;
+	logger.info(`Launching extra probes (${count} in total) for development debugging.`);
+	throng({worker: connect, count})
 		.catch(error => {
 			logger.error(error);
 		});

@@ -38,6 +38,7 @@
     "chai": "^4.3.6",
     "husky": "^8.0.1",
     "mocha": "^10.0.0",
+    "nodemon": "^2.0.19",
     "semantic-release": "^19.0.3",
     "sinon": "^14.0.0",
     "ts-node": "^10.8.2",
@@ -45,6 +46,7 @@
     "xo": "^0.50.0"
   },
   "scripts": {
+    "debug": "echo $PATH",
     "build": "tsc && npm run copy:sh",
     "copy:sh": "cp -r ./src/sh ./dist/sh",
     "init:hooks": "husky install",
@@ -52,7 +54,9 @@
     "lint:fix": "xo --fix",
     "clean": "rimraf coverage",
     "test": "mocha",
-    "test:coverage": "npm run clean && c8 mocha"
+    "test:coverage": "npm run clean && c8 mocha",
+    "watch": "tsc --watch",
+    "dev": "NODE_ENV=development nodemon dist/index.js"
   },
   "xo": {
     "rules": {
